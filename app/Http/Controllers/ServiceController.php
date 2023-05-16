@@ -27,9 +27,9 @@ class ServiceController extends Controller
     {
         // api validation
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required'
+            'title' => 'required',
+            'slug' => 'required|unique:services,slug',
+            'details' => 'required'
         ]);
 
         // create data
@@ -60,9 +60,9 @@ class ServiceController extends Controller
     {
         // api validation
         $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required'
+            'title' => 'required',
+            'slug' => 'required|unique:services,slug,'.$id,
+            'details' => 'required'
         ]);
 
         // update data

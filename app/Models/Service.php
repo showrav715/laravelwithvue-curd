@@ -9,5 +9,7 @@ class Service extends Model
 {
     use HasFactory;
 
-     protected $fillable = ['name', 'description', 'slug'];
+     protected $fillable = ['title', 'details', 'slug'];
+    //  timestamps are not needed
+     public $timestamps = false;
 }
