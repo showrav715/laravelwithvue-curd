@@ -12,11 +12,26 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $datas = Service::all();
+        $datas = Service::get();
+  
+        foreach($datas as $data){
+            
+            $newData[] = [
+                'id' => $data->id,
+                'title' => $data->title,
+                'slug' => $data->slug,
+                'details' => $data->details,
+                'image' => asset('images/services/'.$data->image),
+                'created_at' => $data->created_at,
+                'updated_at' => $data->updated_at
+            ];
+            
+        }
+        
         return response()->json([
             'message' => 'Data retrieved successfully',
             'status' => 200,
-            'data' => $datas
+            'data' => $newData
         ]);
     }
 
@@ -29,8 +44,18 @@ class ServiceController extends Controller
         $request->validate([
             'title' => 'required',
             'slug' => 'required|unique:services,slug',
-            'details' => 'required'
+            'details' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+
+
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension(); // get image extension
+            $destinationPath = public_path('/images/services'); // public path folder dir
+            $image->move($destinationPath, $name); // move image to destination folder
+            $request->merge(['image' => $name]);
+        }
 
         // create data
         Service::create($request->all());

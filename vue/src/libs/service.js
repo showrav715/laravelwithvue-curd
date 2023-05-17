@@ -19,8 +19,16 @@ const useService = function () {
     };
 
     const storeService = (data) => {
+        const { title, slug,details, image } = data;
+
+        // Create a new FormData object
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', title);
+        formDataToSend.append('slug', slug);
+        formDataToSend.append('details', details);
+        formDataToSend.append('image', image);
         axios
-            .post("api/services/store", data)
+            .post("api/services", formDataToSend)
             .then((res) => {
                 route.push({ name: "Service" });
             })

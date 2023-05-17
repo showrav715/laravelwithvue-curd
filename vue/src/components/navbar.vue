@@ -17,6 +17,11 @@
         <li class="nav-item">
           <router-link to="/add" class="nav-link">Add Service</router-link>
         </li>
+        <div class="text-right">
+          <li class="nav-item">
+          <router-link to="/register" class="nav-link">Register</router-link>
+        </li>
+        </div>
       </ul>
     </div>
   </div>

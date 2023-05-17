@@ -8,6 +8,7 @@
     
     <tr>
       <th scope="col">Id</th>
+      <th scope="col">Image</th>
       <th scope="col">Title</th>
       <th scope="col">Slug</th>
       <th scope="col">Details</th>
@@ -16,7 +17,10 @@
   </thead>
   <tbody>
     <tr v-for="service in services" :key="service.id">
-      <th scope="row">{{service.id}}</th>
+      <th>{{service.id}}</th>
+      <td>
+          <img :src="service.image" height="150" width="100"/>
+      </td>
       <td>{{service.title}}</td>
       <td>{{service.slug}}</td>
       <td>{{service.details}}</td>
