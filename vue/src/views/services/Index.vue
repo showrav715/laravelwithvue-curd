@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="service in services" :key="service.id">
+    <tr v-if="services.length != 0" v-for="service in services" :key="service.id">
       <th>{{service.id}}</th>
       <td>
           <img :src="service.image" height="150" width="100"/>
@@ -26,8 +26,10 @@
       <td>{{service.details}}</td>
       <td>
           <router-link :to="{name: 'EditService', params: {id: service.id}}" class="btn btn-primary">Edit</router-link>
-          
       </td>
+    </tr>
+    <tr v-else>
+        <td colspan="6" class="text-center">No Data Found</td>
     </tr>
     
   </tbody>

@@ -19,7 +19,7 @@ const useService = function () {
     };
 
     const storeService = (data) => {
-        const { title, slug,details, image } = data;
+        const { title, slug, details, image } = data;
 
         // Create a new FormData object
         const formDataToSend = new FormData();
@@ -38,18 +38,36 @@ const useService = function () {
     };
 
 
-    const updateService = (id) => { 
+    const updateService = (id) => {
+
+
+        const { title, slug, details, image } = service.value;
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', title);
+        formDataToSend.append('slug', slug);
+        formDataToSend.append('details', details);
+        formDataToSend.append('image', image);
+        formDataToSend.append('_method', 'PUT');
+
+        // image file check 
+        if (typeof image === 'string') {
+            formDataToSend.delete('image');
+        } else {
+            formDataToSend.append('image', image);
+        }
+
         axios
-            .put("api/services/" + id, service.value)
+            .post("api/services/" + id, formDataToSend)
             .then((res) => {
                 route.push({ name: "Service" });
+                
             })
             .catch((error) => {
                 errors.value = error.response.data.errors;
             });
     }
 
-    const deleteService = (id) => { 
+    const deleteService = (id) => {
         axios
             .delete("api/services/delete/" + id)
             .then((res) => {

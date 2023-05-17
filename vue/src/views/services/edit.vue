@@ -2,7 +2,7 @@
     <div class="my-5 w-75 mx-auto">
         <h5 class="text-center">Edit Service</h5>
         <hr />
-        <form @submit.prevent="updateService(id)">
+        <form @submit.prevent="updateService(id)" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input
@@ -26,6 +26,23 @@
                 />
                 <div class="text-danger" v-if="errors.slug">
                     {{errors.slug[0]}}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="slug" class="form-label"
+                    >Image</label
+                >
+                <input
+                    type="file"
+                    class="form-control"
+                    id="image"
+                    name="image"
+                    @change="handleFileUpload"
+                />
+                <img class="my-2" :src="service.image" alt="">
+                <div class="text-danger" v-if="errors.image">
+                    {{errors.image[0]}}
                 </div>
             </div>
 
@@ -54,5 +71,11 @@ const { service, singleService,updateService,errors } = useService();
 const route = useRoute();
 const id = route.params.id;
 onMounted(() => singleService(id));
+
+const handleFileUpload = (e) => {
+    service.value.image = e.target.files[0];
+};
+
+
 </script>
 <style lang=""></style>

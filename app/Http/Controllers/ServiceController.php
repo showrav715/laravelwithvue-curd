@@ -14,8 +14,13 @@ class ServiceController extends Controller
     {
         $datas = Service::get();
   
+        if($datas->isEmpty()){
+            return response()->json([
+                'message' => 'No data found',
+                'status' => 404,
+            ]);
+        }
         foreach($datas as $data){
-            
             $newData[] = [
                 'id' => $data->id,
                 'title' => $data->title,
@@ -48,17 +53,18 @@ class ServiceController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-
+        $input = $request->all();
         if($request->hasFile('image')){
             $image = $request->file('image');
             $name = time().'.'.$image->getClientOriginalExtension(); // get image extension
             $destinationPath = public_path('/images/services'); // public path folder dir
             $image->move($destinationPath, $name); // move image to destination folder
-            $request->merge(['image' => $name]);
+            $input['image'] = $name;
         }
 
+       
         // create data
-        Service::create($request->all());
+        Service::create($input);
         return response()->json([
             'message' => 'Data added successfully',
             'status' => 200,
@@ -71,6 +77,8 @@ class ServiceController extends Controller
     public function show(string $id)
     {
         $data = Service::find($id);
+        $data->image = asset('images/services/'.$data->image);
+
         return response()->json([
             'message' => 'Data retrieved successfully',
             'status' => 200,
@@ -83,15 +91,31 @@ class ServiceController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        
+  
         // api validation
         $request->validate([
             'title' => 'required',
             'slug' => 'required|unique:services,slug,'.$id,
-            'details' => 'required'
+            'details' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
+
+        $data = Service::find($id);
+        $input = $request->all();
+        if($request->hasFile('image')){
+            // delete old image
+            @unlink(public_path('images/services/'.$data->image));
+            $image = $request->file('image');
+            $name = time().'.'.$image->getClientOriginalExtension(); // get image extension
+            $destinationPath = public_path('/images/services'); // public path folder dir
+            $image->move($destinationPath, $name); // move image to destination folder
+            $input['image'] = $name;
+        }
+
         // update data
-        Service::find($id)->update($request->all());
+        $data->update($input);
         return response()->json([
             'message' => 'Data updated successfully',
             'status' => 200,
