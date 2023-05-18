@@ -1,23 +1,6 @@
 <template lang="">
     <div class="my-5 w-75 mx-auto">
-        <form
-            @submit.prevent="handleRegister"
-            enctype="multipart/form-data"
-        >
-            <div class="mb-3">
-                <label for="title" class="form-label">Name</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    name="name"
-                    v-model="form.name"
-                    aria-describedby="emailHelp"
-                />
-                <div class="text-danger" v-if="errors.name">
-                    {{ errors.name[0] }}
-                </div>
-            </div>
+        <form @submit.prevent="handleLogin">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input
@@ -45,24 +28,22 @@
                     {{ errors.password[0] }}
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
 </template>
 <script setup>
 import { ref } from "vue";
 import useAuth from "../../libs/auth";
-const { Register, errors } = useAuth();
-
+const { errors, Login } = useAuth();
 const form = ref({
-    name: "",
     email: "",
     password: "",
 });
 
-const handleRegister = (e) => {
+const handleLogin = (e) => {
     e.preventDefault();
-    //console.log(form.value);
-    Register(form.value);
+    Login(form.value);
 };
 </script>
+<style lang=""></style>

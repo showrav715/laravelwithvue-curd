@@ -27,6 +27,7 @@ class AuthenticatedSessionController extends Controller
         $token = auth()->user()->createToken('authToken')->plainTextToken;
         return response()->json([
             'message' => 'Login successful',
+            'user' => auth()->user(),
             'status' => 200,
             'token' => $token
         ]);

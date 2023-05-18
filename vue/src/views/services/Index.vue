@@ -25,7 +25,8 @@
       <td>{{service.slug}}</td>
       <td>{{service.details}}</td>
       <td>
-          <router-link :to="{name: 'EditService', params: {id: service.id}}" class="btn btn-primary">Edit</router-link>
+          <router-link :to="{name: 'EditService', params: {id: service.id}}" class="btn btn-primary mx-3">Edit</router-link>
+          <button type="button" @click="deleteService(service.id)" class="btn btn-danger">Delete</button>
       </td>
     </tr>
     <tr v-else>
@@ -40,7 +41,7 @@
 <script setup>
 import useService from "../../libs/service";
 import { onMounted } from 'vue';
-const {services, getService } = useService();
+const {services, getService,deleteService } = useService();
 
 
 onMounted(() => getService())

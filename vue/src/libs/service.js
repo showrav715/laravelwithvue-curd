@@ -68,14 +68,19 @@ const useService = function () {
     }
 
     const deleteService = (id) => {
-        axios
-            .delete("api/services/delete/" + id)
-            .then((res) => {
-                route.push({ name: "Service" });
-            })
-            .catch((error) => {
-                errors.value = error.response.data.errors;
-            });
+        let status = confirm("Are you sure to delete this service?");
+        if (status) {
+            axios.delete("api/services/" + id)
+                .then((res) => {
+                    getService();
+                    route.push({ name: "Service" });
+                })
+                .catch((error) => {
+                    errors.value = error.response.data.errors;
+                });
+        } else {
+            return false;
+        }
     }
 
 
